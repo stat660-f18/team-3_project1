@@ -31,3 +31,52 @@ Step 3: Drag and drop the files to GitHub.
 
 *******************************************************************************;
 */
+
+*******************************************************************************;
+* Loading the COTW-edited.csv file over the wire                               ;
+*******************************************************************************;
+
+filename tempfile TEMP;
+proc http
+    method="get"
+    url="https://github.com/stat660/team-3_project1/blob/v0.1/COTW-edited.csv?raw=true"
+    out=tempfile
+    ;
+run;
+
+proc import
+    file=tempfile
+    out=cotw_raw
+    dbms=csv
+	replace;
+run;
+filename tempfile clear;
+
+*******************************************************************************;
+* Check raw dataset for duplicates with respect to primary key (country)       ;
+*******************************************************************************;
+
+proc sort
+        nodupkey
+        data=cotw_raw
+        out=_null_    ;
+    by Country  ;
+run;
+
+*******************************************************************************;
+* Build analytic dataset from COTW dataset with the least number of columns and
+  minimal cleaning/transformation needed to address research questions in
+  corresponding data-analysis files ;
+*******************************************************************************;
+
+data COTW_analytic_file;
+    keep
+        Country
+		Population
+		Net_Migration
+		Literacy
+		Deathrate 
+		GDP
+		Infant_mortality;
+    set cotw_raw;
+run;
