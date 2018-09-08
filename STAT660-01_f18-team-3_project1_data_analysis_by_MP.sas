@@ -16,7 +16,7 @@ Please see included file for dataset properties ;
 
 
 filename _inbox "%sysfunc(getoption(work))/STAT660-01_f18-team-3_project1_data_preparation.sas";
-proc http method="get" url="https://raw.githubusercontent.com/stat660/team-3_project1/blob/v0.1/STAT660-01_f18-team-3_project1_data_preparation.sas" 
+proc http method="get" url="https://raw.githubusercontent.com/stat660/team-3_project1/v0.1/STAT660-01_f18-team-3_project1_data_preparation.sas" 
 out=_inbox;
 run;
 
