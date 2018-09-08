@@ -63,7 +63,7 @@ proc print data=COTW_analytic_file_temp (obs=20) ;
   title2 "Top 20 Countries with Highest Net Migration Rate";
   footnote2 "Based on the above output, Afghanistan has the highest net 
     migration.  8 other countries have at least 10% net migration rate. Both
-    world torn countries and well established economical countries exhibit
+    war torn countries and countries with well established economy exhibited
     high net migration rate of above 10%.";
 run;
 
