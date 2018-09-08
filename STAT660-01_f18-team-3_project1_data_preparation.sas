@@ -33,6 +33,7 @@ Step 3: Drag and drop the files to GitHub.
 */
 
 *******************************************************************************;
+* Environmental setup							       ;
 * Loading the COTW-edited.csv file over the wire                               ;
 *******************************************************************************;
 
@@ -48,7 +49,7 @@ proc import
     file=tempfile
     out=cotw_raw
     dbms=csv
-	replace;
+    replace;
 run;
 filename tempfile clear;
 
@@ -57,9 +58,9 @@ filename tempfile clear;
 *******************************************************************************;
 
 proc sort
-        nodupkey
-        data=cotw_raw
-        out=_null_    ;
+    nodupkey
+    data=cotw_raw
+    out=_null_    ;
     by Country  ;
 run;
 
@@ -72,11 +73,11 @@ run;
 data COTW_analytic_file;
     keep
         Country
-		Population
-		Net_Migration
-		Literacy
-		Deathrate 
-		GDP
-		Infant_mortality;
+	Population
+	Net_Migration
+	Literacy
+	Deathrate 
+	GDP
+	Infant_mortality;
     set cotw_raw;
 run;
