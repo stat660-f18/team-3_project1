@@ -71,20 +71,20 @@ run;
 
 data COTW_analytic_file;
     retain
-        Country
-	Population
-	Net_Migration
-	Literacy
-	Deathrate 
-	GDP
-	Infant_mortality;
+      Country
+      Population
+      Net_Migration
+      Literacy
+      Deathrate 
+      GDP
+      Infant_mortality;
     keep
-        Country
-	Population
-	Net_Migration
-	Literacy
-	Deathrate 
-	GDP
-	Infant_mortality;
+      Country
+      Population
+      Net_Migration
+      Literacy
+      Deathrate 
+      GDP
+      Infant_mortality;
     set cotw_raw;
 run;
