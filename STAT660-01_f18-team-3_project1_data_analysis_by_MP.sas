@@ -11,15 +11,16 @@ Dataset Name: COTW_analytic_file created in external file
 STAT660-01_f18-team-3_project1_data_preparation.sas, which is assumed to be
 in the same directory as this file.
 
-Please see included file for dataset properties ;
+Please see included file for dataset properties 
+;
 
-filename _inbox "%sysfunc(getoption(work))/STAT660-01_f18-team-3_project1_data_preparation.sas";
-proc http method="get" url="https://raw.githubusercontent.com/stat660/team-3_project1/v0.1/STAT660-01_f18-team-3_project1_data_preparation.sas" 
-out=_inbox;
-run;
+* environmental setup;
 
-%Include _inbox;
-filename _inbox clear;
+* set relative file import path to current directory (using standard SAS trick);
+X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPATH))-%length(%sysget(SAS_EXECFILENAME))))""";
+
+* load external file that generates analytic dataset FRPM1516_analytic_file;
+%include '.\STAT660-01_f18-team-3_project1_data_preparation.sas';
 
 *******************************************************************************;
 *
@@ -45,28 +46,28 @@ illegal values.
 ;
 
 proc means mean noprint data=COTW_analytic_file;
-  class Country;
-  var net_migration;
-  output out=COTW_analytic_file_temp;
+    class Country;
+    var net_migration;
+    output out=COTW_analytic_file_temp;
 run;
 
 proc sort data=COTW_analytic_file_temp (where=(_STAT_="MEAN"));
-  by descending net_migration;
+    by descending net_migration;
 run;
 
-  title1 "STAT 660: Team 3 Project 1 MP";
-  title2 "Top 20 Countries with Highest Net Migration Rate";
-  footnote2 "Based on the above output, Afghanistan has the highest net 
+title1 "STAT 660: Team 3 Project 1 MP";
+title2 "Top 20 Countries with Highest Net Migration Rate";
+footnote2 "Based on the above output, Afghanistan has the highest net 
     migration.  8 other countries have at least 10% net migration rate. Both
     war torn countries and countries with well established economy exhibited
     high net migration rate of above 10%.";
     
 proc print data=COTW_analytic_file_temp (obs=20) ;
-  id Country;
-  var net_migration;
+    id Country;
+    var net_migration;
 run;
-  title2;
-  footnote2;
+title2;
+footnote2;
   
 *******************************************************************************;
 *
@@ -92,15 +93,15 @@ mortality, and net migration. And use proc plot to generate a graph of the
 variable net_migration against death rate.
 ;
 
- title2 "Correlation Between Net Migration Rate and Death Rate";
- footnote2 "Pearson Chi-Sq Test shows p-value > 0.05, therefore failed to 
-		reject Ho s.t. there is not enough evidence to show significant
-		correlation between net migration and death rate.";
+title2 "Correlation Between Net Migration Rate and Death Rate";
+footnote2 "Pearson Chi-Sq Test shows p-value > 0.05, therefore failed to 
+    reject Ho s.t. there is not enough evidence to show significant
+    correlation between net migration and death rate.";
 proc corr data = COTW_analytic_file PEARSON SPEARMAN;
- var net_migration deathrate ;
+    var net_migration deathrate ;
 run;
-  title2;
-  footnote2;
+title2;
+footnote2;
 
 *******************************************************************************;
 *
@@ -122,19 +123,19 @@ Follow-up Steps: A possible follow-up to this approach could use an inferential
 statistical technique like beta regression.;
 
 data _temp_COTW_analytic_file;
-	set COTW_analytic_file;
-	deathrate = deathrate/100;
-	net_migration = net_migration/100;
-	format deathrate net_migration percent15.2;
+    set COTW_analytic_file;
+    deathrate = deathrate/100;
+    net_migration = net_migration/100;
+    format deathrate net_migration percent15.2;
 run;
 
-  title2 "Death Rate effect on Net Migration";
-  footnote2 "Quartile Values";
+title2 "Death Rate effect on Net Migration";
+footnote2 "Quartile Values";
 proc means min q1 median q3 max data=_temp_COTW_analytic_file;
-  var deathrate net_migration    ;
+    var deathrate net_migration    ;
 run;
-  title2;
-  footnote2;
+title2;
+footnote2;
 
 proc format;
     value deathrate_bins
@@ -151,18 +152,16 @@ proc format;
     ;
 run;
 
-  title2 "Death Rate effect on Net Migration";
-  footnote2 "Based on the above output, there's no clear inferential pattern 
+title2 "Death Rate effect on Net Migration";
+footnote2 "Based on the above output, there's no clear inferential pattern 
     for predicting the net migration rate based on a country's death rate 
     since cell counts don't tend to follow trends for increasing or decreasing 
     consistently.";
 proc freq data=_temp_COTW_analytic_file;
-  table deathrate*Net_Migration   / missing norow nocol nopercent    ;
-  format
+    table deathrate*Net_Migration   / missing norow nocol nopercent ;
+    format
     Deathrate      deathrate_bins.
-    Net_Migration  Net_Migration_bins.    ;
+    Net_Migration  Net_Migration_bins. ;
 run;
-  title2;
-  footnote2;
-
-*******************************************************************************;
+title2;
+footnote2;
