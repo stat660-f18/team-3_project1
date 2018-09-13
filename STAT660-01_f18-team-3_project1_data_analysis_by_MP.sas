@@ -19,7 +19,7 @@ Please see included file for dataset properties
 * set relative file import path to current directory (using standard SAS trick);
 X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPATH))-%length(%sysget(SAS_EXECFILENAME))))""";
 
-* load external file that generates analytic dataset FRPM1516_analytic_file;
+* load external file that generates analytic dataset COTW_analytic_file;
 %include '.\STAT660-01_f18-team-3_project1_data_preparation.sas';
 
 *******************************************************************************;
