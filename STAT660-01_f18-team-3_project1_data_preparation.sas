@@ -19,7 +19,7 @@ This file prepares the dataset described below for analysis.
 
 [Unique ID] The column "Country" is a primary key.
 
-[Edited File] https://github.com/stat660/team-3_project1/blob/v0.1/COTW-edited.csv
+[Edited File] https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv
 
 [Process to create the COTW-edited.csv file in GitHub]
 Step 1: Downloaded the file from kaggle.com site.
@@ -33,16 +33,15 @@ Step 3: Drag and drop the files to GitHub.
 */
 
 *******************************************************************************;
-* Environmental setup							       ;
+* Environmental setup							       						   ;
 * Loading the COTW-edited.csv file over the wire                               ;
 *******************************************************************************;
 
 filename tempfile TEMP;
 proc http
     method="get"
-    url="https://github.com/stat660/team-3_project1/blob/v0.1/COTW-edited.csv?raw=true"
-    out=tempfile
-    ;
+    url="https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv?raw=true"
+    out=tempfile;
 run;
 
 proc import
@@ -60,8 +59,8 @@ filename tempfile clear;
 proc sort
     nodupkey
     data=cotw_raw
-    out=_null_    ;
-    by Country  ;
+    out=_null_;
+    by Country;
 run;
 
 *******************************************************************************;
@@ -71,13 +70,21 @@ run;
 *******************************************************************************;
 
 data COTW_analytic_file;
+    retain
+      Country
+      Population
+      Net_Migration
+      Literacy
+      Deathrate 
+      GDP
+      Infant_mortality;
     keep
-        Country
-	Population
-	Net_Migration
-	Literacy
-	Deathrate 
-	GDP
-	Infant_mortality;
+      Country
+      Population
+      Net_Migration
+      Literacy
+      Deathrate 
+      GDP
+      Infant_mortality;
     set cotw_raw;
 run;

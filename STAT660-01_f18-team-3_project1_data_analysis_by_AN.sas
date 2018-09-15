@@ -5,13 +5,10 @@
 
 *
 This file uses the following analytic dataset to address several research
-
-questions regarding net migration.
+questions regarding GDP and Literacy of countries in the world.
 
 Dataset Name: COTW_analytic_file created in external file
-
 STAT660-01_f18-team-3_project1_data_preparation.sas, which is assumed to be
-
 in the same directory as this file.
 
 Please see included file for dataset properties ;
@@ -19,17 +16,13 @@ Please see included file for dataset properties ;
 
 * environmental setup;
 
-* load external file that generates analytic dataset FRPM1516_analytic_file;
+* set relative file import path to current directory (using standard SAS trick;
+X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPATH))-%length(%sysget(SAS_EXECFILENAME))))""";
 
-filename _inbox "%sysfunc(getoption(work))/STAT660-01_f18-team-3_project1_data_preparation.sas"; 
- 
-proc http method="get" url="https://raw.githubusercontent.com/stat660/team-3_project1/blob/v0.1/STAT660-01_f18-team-3_project1_data_preparation.sas"  
- 
-out=_inbox; 
- 
-run; 
- 
-filename _inbox clear; 
+* load external file that generates analytic dataset FRPM1516_analytic_file;
+%include '.\STAT660-01_f18-team-3_project1_data_preparation.sas';
+
+
  
  
  
@@ -38,80 +31,51 @@ filename _inbox clear;
 * 
  
 Research Question: What are the top 20 countries with the highest values of  
-
 "Highest GDP"?  
  
+Rationale: This should help identify contries with the highest GDP - It 
+represents the standard of living of the countries. The higher GDP, the higher 
+standard of living seems to be.
  
+Methodology: Use PROC MEANS to compute the mean of GDP for countries, and output 
+the results to a temporary dataset. Use PROC SORT extract and sort just the means 
+the temporary dataset, and use PROC PRINT to print just the first twenty 
+observations from the temporary dataset. 
  
-Rationale: This should help identify contries with the highest GDP - It represents 
-
-the standard of living of the countries . 
+Limitations: Missing data for some countries. The methodology does not account 
+for countries with missing data, nor does it attempt to validate data in any way,
+like filtering for percentages between 0 and 1.
  
- 
- 
-Methodology: Use PROC MEANS to compute the mean of GDP 
- 
-for Country, and output the results to a temporary dataset. Use PROC 
- 
-SORT extract and sort just the means the temporary dataset, and use PROC PRINT 
- 
-to print just the first twenty observations from the temporary dataset. 
- 
- 
- 
-Limitations: Missing data for some countries 
- 
- 
- 
-Possible Follow-up Steps: More carefully clean the values of the variable 
- 
-GDP so that the means computed do not include any possible 
-
-illegal values. 
+Possible Follow-up Steps: More carefully clean the values of the variable GDP 
+so that the means computed do not include any possible illegal values. 
  
 ; 
  
  
  
 proc means mean noprint data=COTW_analytic_file; 
- 
-  class Country; 
- 
-  var GDP; 
- 
-  output out=COTW_analytic_file_temp; 
- 
+    class Country; 
+    var GDP; 
+    output out=COTW_analytic_file_temp; 
 run; 
- 
- 
- 
+
 proc sort data=COTW_analytic_file_temp (where=(_STAT_="MEAN")); 
- 
-  by descending GDP; 
- 
+    by descending GDP; 
 run; 
- 
- 
+title1 "STAT 660: Team 3 Project 1 AN";
+title2 "Top 20 Countries with Highest GDP";
+footnote2 "Based on the above output, except for USA at rank 3, the 10 
+countries having the highest GDP are small-sized countries in Europe,
+with Luxembourg ranked no.1.These top 10 highest-GDP countries have the minimum 
+GDP value of 30000(USD)per capita.";
  
 proc print data=COTW_analytic_file_temp (obs=20) ; 
- 
-  id Country; 
- 
-  var GDP; 
- 
-  title1 "STAT 660: Team 3 Project 1 AN"; 
- 
-  title2 "Top 20 Countries with Highest GDP"; 
- 
-  footnote2 "Based on the above output, except for USA at rank 3, the 10 
-
-countries having the highest GDP are small-sized countries in Europe,
- 
-with Luxembourg ranked no.1.These top 10 highest-GDP countries have the minimum 
-
-GDP value of 30000(USD)per capita";
-
+    id Country; 
+    var GDP; 
 run;
+title1;
+title2;
+footnote2;
  
  
  
@@ -122,11 +86,7 @@ run;
  
 Research Question: Is there a correlation between GDP and net_migration?  
  
- 
- 
 Rationale: Identify correlations between GDP and net_migration. 
- 
- 
  
 Methodology: Use PROC CORR can to compute Pearson product-moment correlation  
  
