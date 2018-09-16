@@ -33,24 +33,46 @@ Step 3: Drag and drop the files to GitHub.
 */
 
 *******************************************************************************;
-* Environmental setup							       						   ;
+* Environmental setup                                                          ;
 * Loading the COTW-edited.csv file over the wire                               ;
 *******************************************************************************;
+* setup environmental parameters;
+%let inputDatasetURL = https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv?raw=true;
 
-filename tempfile TEMP;
-proc http
-    method="get"
-    url="https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv?raw=true"
-    out=tempfile;
-run;
+*load COTW raw file over the wire;
+%macro loadDataIfNotAlreadyAvailable(dsn,url,filetype);
+    %put &=dsn;
+    %put &=url;
+    %put &=filetype;
+    %if
+        %sysfunc(exist(&dsn.)) = 0
+    %then
+        %do;
+            %put Loading dataset &dsn. over the wire now...;
+            filename tempfile "%sysfunc(getoption(work))/tempfile.xlsx";
+            proc http
+                method="get"
+                url="&url."
+                out=tempfile
+                ;
+            run;
+            proc import
+                file=tempfile
+                out=&dsn.
+                dbms=&filetype.;
+            run;
+            filename tempfile clear;
+        %end;
+    %else
+        %do;
+            %put Dataset &dsn. already exists. Please delete and try again.;
+        %end;
+%mend;
 
-proc import
-    file=tempfile
-    out=cotw_raw
-    dbms=csv
-    replace;
-run;
-filename tempfile clear;
+%loadDataIfNotAlreadyAvailable(
+    cotw_raw,
+    &inputDatasetURL.,
+    csv);
 
 *******************************************************************************;
 * Check raw dataset for duplicates with respect to primary key (country)       ;
