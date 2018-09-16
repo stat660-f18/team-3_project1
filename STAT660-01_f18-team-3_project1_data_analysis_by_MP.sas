@@ -107,11 +107,11 @@ footnote2;
 *
 Research Question:  Can "Death Rate" be used to predict "Net Migration"? 
 
-Rationale: This would help determine whether literacy has any effect on the 
+Rationale: This would help determine whether death rate has any effect on the 
 countries's Net Migration.
 
 Methodology: Use proc means to study the five-number summary of each variable,
-create formats to bin values of Literacy and Net_Migration based upon their 
+create formats to bin values of Death Rate and Net_Migration based upon their 
 spread, and use proc freq to cross-tabulate bins.
 
 Limitations: Even though predictive modeling is specified in the research
@@ -145,10 +145,10 @@ proc format;
         0.1062<-high   ="Q4 Death Rate"
     ;
     value Net_Migration_bins
-         low    - -0.0095="Q1 Net Migration"
-        -0.0095<-  0     ="Q2 Net Migration"
-         0     <-  0.0100="Q3 Net Migration"
-         0.0100<-  high  ="Q4 Net Migration"
+        low    - -0.0095="Q1 Net Migration"
+       -0.0095<-  0     ="Q2 Net Migration"
+        0     <-  0.0100="Q3 Net Migration"
+        0.0100<-  high  ="Q4 Net Migration"
     ;
 run;
 
