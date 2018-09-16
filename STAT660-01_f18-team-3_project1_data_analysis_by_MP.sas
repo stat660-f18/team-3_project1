@@ -159,9 +159,7 @@ footnote2 "Based on the above output, there's no clear inferential pattern
     consistently.";
 proc freq data=_temp_COTW_analytic_file;
     table deathrate*Net_Migration   / missing norow nocol nopercent ;
-    format
-    Deathrate      deathrate_bins.
-    Net_Migration  Net_Migration_bins. ;
+    format Deathrate deathrate_bins. Net_Migration  Net_Migration_bins. ;
 run;
 title2;
 footnote2;
