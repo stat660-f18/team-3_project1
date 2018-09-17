@@ -41,15 +41,15 @@ Step 3: Drag and drop the files to GitHub.
 proc format;
     value deathrate_bins
         low   -05.85 ="Q1 Death Rate"
-        05.85<-07.84 ="Q2 Death Rate”
+        05.85<-07.84 ="Q2 Death Rate"
         07.84<-10.62 ="Q3 Death Rate"
         10.62<-high  ="Q4 Death Rate"
     ;
     value Net_Migration_bins
         low   --0.95 ="Q1 Net Migration"
         -0.95<- 0    ="Q2 Net Migration"
-         0   <- 1.00 ="Q3 Net Migration"
-         1.00<- high ="Q4 Net Migration"
+         0   <- 1.01 ="Q3 Net Migration"
+         1.01<- high ="Q4 Net Migration"
     ;
 run;
 
@@ -93,7 +93,6 @@ run;
     &inputDatasetURL.,
     csv
 )
-;
 
 
 *******************************************************************************;
