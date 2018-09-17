@@ -34,10 +34,29 @@ Step 3: Drag and drop the files to GitHub.
 
 *******************************************************************************;
 * Environmental setup                                                          ;
-* Loading the COTW-edited.csv file over the wire                               ;
 *******************************************************************************;
+
+* Create format output;
+
+proc format;
+    value deathrate_bins
+        low   -05.85 ="Q1 Death Rate"
+        05.85<-07.84 ="Q2 Death Rate”
+        07.84<-10.62 ="Q3 Death Rate"
+        10.62<-high  ="Q4 Death Rate"
+    ;
+    value Net_Migration_bins
+        low   --0.95 ="Q1 Net Migration"
+        -0.95<- 0    ="Q2 Net Migration"
+         0   <- 1.00 ="Q3 Net Migration"
+         1.00<- high ="Q4 Net Migration"
+    ;
+run;
+
 * setup environmental parameters;
-%let inputDatasetURL = https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv?raw=true;
+
+%let inputDatasetURL = 
+    https://github.com/stat660/team-3_project1/blob/master/COTW-edited.csv?raw=true;
 
 *load COTW raw file over the wire;
 %macro loadDataIfNotAlreadyAvailable(dsn,url,filetype);
@@ -72,17 +91,23 @@ Step 3: Drag and drop the files to GitHub.
 %loadDataIfNotAlreadyAvailable(
     cotw_raw,
     &inputDatasetURL.,
-    csv);
+    csv
+)
+;
+
 
 *******************************************************************************;
 * Check raw dataset for duplicates with respect to primary key (country)       ;
 *******************************************************************************;
 
 proc sort
-    nodupkey
-    data=cotw_raw
-    out=_null_;
-    by Country;
+        nodupkey
+        data=cotw_raw
+        out=_null_
+    ;
+    by 
+        Country
+    ;
 run;
 
 *******************************************************************************;
@@ -93,20 +118,56 @@ run;
 
 data COTW_analytic_file;
     retain
-      Country
-      Population
-      Net_Migration
-      Literacy
-      Deathrate 
-      GDP
-      Infant_mortality;
+        Country
+        Population
+        Net_Migration
+        Literacy
+        Deathrate 
+        GDP
+        Infant_mortality
+    ;
     keep
-      Country
-      Population
-      Net_Migration
-      Literacy
-      Deathrate 
-      GDP
-      Infant_mortality;
-    set cotw_raw;
+        Country
+        Population
+        Net_Migration
+        Literacy
+        Deathrate 
+        GDP
+        Infant_mortality
+    ;
+    set 
+        cotw_raw
+    ;
 run;
+
+*******************************************************************************;
+* 
+Use PROC MEANS to compute the mean of net_migration for Country, and output the
+results to a temporary dataset, and use PROC SORT to extract and sort just the 
+means the temporary dataset, which will be used as part of data analysis by MP.;
+*******************************************************************************;
+
+proc means 
+        mean 
+        noprint 
+        data=COTW_analytic_file
+        ;
+    class 
+        Country
+    ;
+    var 
+        net_migration
+    ;
+    output 
+        out=COTW_analytic_file_temp
+    ;
+run;
+
+proc sort 
+        data=COTW_analytic_file_temp (where=(_STAT_="MEAN"))
+    ;
+    by 
+        descending net_migration
+    ;
+run;
+
