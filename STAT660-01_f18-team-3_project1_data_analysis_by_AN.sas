@@ -65,9 +65,9 @@ run;
 title1 "STAT 660: Team 3 Project 1 AN";
 title2 "Top 20 Countries with Highest GDP";
 footnote2 "Based on the above output, except for USA at rank 3, the 10 
-countries having the highest GDP are small-sized countries in Europe,
-with Luxembourg ranked no.1.These top 10 highest-GDP countries have the minimum 
-GDP value of 30000(USD)per capita.";
+    countries having the highest GDP are small-sized countries in Europe,
+    with Luxembourg ranked no.1.These top 10 highest-GDP countries have the minimum 
+    GDP value of 30000(USD)per capita.";
  
 proc print data=COTW_analytic_file_temp (obs=20) ; 
     id Country; 
@@ -76,130 +76,101 @@ run;
 title1;
 title2;
 footnote2;
- 
- 
- 
- 
+
+
+
+
 *******************************************************************************; 
  
 * 
  
-Research Question: Is there a correlation between GDP and net_migration?  
+Research Question: Is there a correlation between GDP and net_migration?
  
 Rationale: Identify correlations between GDP and net_migration. 
- 
+
 Methodology: Use PROC CORR can to compute Pearson product-moment correlation  
+coefficient between net_migration and GDP, as well as Spearman's rank-order 
+correlation, a nonparametric measures of association. PROC CORR also computes 
+simple descriptive statistics.   
  
-coefficient between net_migration and GDP, as well as Spearman's  
- 
-rank-order correlation, a nonparametric measures of association. PROC CORR  
- 
-also computes simple descriptive statistics.   
- 
- 
- 
-Limitations: Data dictionary is limited. Missing values for some countries
- 
- 
- 
+Limitations: Data dictionary is limited. Missing values for some countries.
+
 Possible Follow-up Steps: More carefully clean the values of the variable 
- 
 net_migration so that the means computed do not include any possible 
- 
 illegal values. 
  
 ; 
- 
- 
- 
+
+title2 "Correlation Between Net Migration and GDP"; 
+footnote2 "Pearson Chi-Sq Test shows p-value <0.001 therefore we could accept  
+    Ho and can safely conclude that there is a significant correlation between 
+    GDP and net migration ";
 proc corr data = COTW_analytic_file PEARSON SPEARMAN; 
- 
- var net_migration GDP ; 
- 
- title2 "Correlation Between Net Migration and GDP"; 
- 
- footnote2 "Pearson Chi-Sq Test shows p-value <0.001 therefore we could accept  
- 
-	    Ho and can safely conclude that there is a significant 
- 
-		correlation between GDP and net migration "; 
- 
-run; 
- 
- 
- 
+    var net_migration GDP ; 
+run;
+title2;
+footnote2; 
+
+
+
+
 *******************************************************************************; 
  
 * 
  
-Research Question:   What the percentage of the countries with literacy rate of 50% or less ?  
- 
- 
- 
-Rationale: This would help inform the portion of low-literacy countries in the world. 
- 
- 
+Research Question:   What the percentage of the countries with literacy rate of 
+50% or less ?  
+
+Rationale: This would help inform the portion of low-literacy countries and the 
+overall literacy status of the world. 
  
 Methodology: Compute five-number summaries by Literacy rate indicator
-
 variable. Create formats to bin values of Literacy bin, categorize
+the variable "Literacy" into 3 groups, "100 percent", "over 50-high" and "under 
+50”. And use proc freq to cross-tabulate bins.
 
-the variable "Literacy" into 3 groups, "100 percent", "over 50-high" and "under 50”.
+Limitations: Data dictionary is limited. Missing values for some countries.
 
-And use proc freq to cross-tabulate bins.
-
+Possible Follow-up Steps: More carefully clean the values of the variable 
+net_migration so that the means computed do not include any possible illegal 
+values. 
+;
  
- 
-Limitations: 
- 
- 
- 
-Follow-up Steps:; 
- 
- 
-
+title2 "Literacy rates by countries";
+footnote2 "Quartile Values";
 proc means
-        min q1 median q3 max
-        data= COTW_analytic_file
+    min q1 median q3 max
+    data= COTW_analytic_file
     ;
-    var
-        Literacy
+    var Literacy
     ;
-
-    footnote; 
 run;
+title2;
+footnote2;
+
 proc format;
-
     value Literacy_bin
-
     1-<50 = "under50"
-
     50-99.9 = "over50-high"
-
-	100 = "100 percent"
-
+    100 = "100 percent"
     ;
-
 run;
+
+title2 "Literacy rate by countries";
+footnote2 "Based on the above output, we could see that there's a fraction
+    of 10% countries of the world that still have a very low literacy rate of 
+    less than 50%. Meanwhile, 86.6% of countries have the literacy rate of 
+    above 50% and only 3.35% of countries reaching the complete Literacy rate 
+    of 100% "; 
 proc freq
-
     data=COTW_analytic_file;
-
     table Literacy;
-
     format
-
-        Literacy Literacy_bin.;
-
-	footnote2 "Based on the above output, we could see that there's a fraction
- 
-of 10% countries of the world that still have a very low literacy rate of less than 50%.
-
-Meanwhile, 86.6% of countries have the literacy rate of above 50% and only 3.35% 
-
-of countries reaching the complete Literacy rate of 100%   "; 
-
+    Literacy Literacy_bin.;
 run;
+title2;
+footnote2;
+
  
  
 *******************************************************************************; 
