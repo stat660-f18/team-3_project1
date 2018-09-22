@@ -118,7 +118,7 @@ footnote2;
  
 * 
  
-Research Question:   What the percentage of the countries with literacy rate of 
+Research Question: What's the percentage of the countries with literacy rate of 
 50% or less ?  
 
 Rationale: This would help inform the portion of low-literacy countries and the 
@@ -147,14 +147,6 @@ proc means
 run;
 title2;
 footnote2;
-
-proc format;
-    value Literacy_bin
-    1-<50 = "under50"
-    50-99.9 = "over50-high"
-    100 = "100 percent"
-    ;
-run;
 
 title2 "Literacy rate by countries";
 footnote2 "Based on the above output, we could see that there's a fraction

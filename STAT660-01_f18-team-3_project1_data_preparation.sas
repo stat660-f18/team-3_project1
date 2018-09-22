@@ -1,3 +1,4 @@
+
 *******************************************************************************;
 **************** 80-character banner for column width reference ***************;
 * (set window width to banner width to calibrate line length to 80 characters *;
@@ -50,6 +51,11 @@ proc format;
         -0.95<- 0    ="Q2 Net Migration"
          0   <- 1.01 ="Q3 Net Migration"
          1.01<- high ="Q4 Net Migration"
+    ;
+	value Literacy_bin
+        1-<50 = "under50"
+        50-99.9 = "over50-high"
+        100 = "100 percent"
     ;
 run;
 
