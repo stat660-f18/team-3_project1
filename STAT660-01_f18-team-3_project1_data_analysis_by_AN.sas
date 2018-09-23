@@ -19,7 +19,7 @@ Please see included file for dataset properties ;
 * set relative file import path to current directory (using standard SAS trick;
 X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPATH))-%length(%sysget(SAS_EXECFILENAME))))""";
 
-* load external file that generates analytic dataset FRPM1516_analytic_file;
+* load external file that generates analytic dataset COTW_analytic_file ;
 %include '.\STAT660-01_f18-team-3_project1_data_preparation.sas';
 
 
@@ -59,10 +59,15 @@ so that the means computed do not include any possible illegal values.
 
  
 proc print 
-    noobs
-    data=COTW_analytic_file_temp (obs=20) ; 
-    id Country; 
-    var GDP; 
+        noobs
+        data=COTW_analytic_file_temp(obs=20) 
+    ; 
+    id 
+        Country
+    ; 
+    var 
+        GDP
+    ; 
 run;
 title;
 footnote;
@@ -80,7 +85,7 @@ title2
 
 footnote1
     "Pearson Chi-Sq Test shows p-value <0.001 therefore we could accept Ho and can safely conclude that there is a significant correlation between GDP and net migration."
-	;
+    ;
 
 * 
 
@@ -97,10 +102,12 @@ illegal values.
  
 ; 
 
-
-
-proc corr data = COTW_analytic_file PEARSON SPEARMAN; 
-    var net_migration GDP ; 
+proc corr 
+        data = COTW_analytic_file PEARSON SPEARMAN
+    ; 
+    var 
+        net_migration GDP 
+    ; 
 run;
 title;
 footnote; 
@@ -119,14 +126,14 @@ title2
 
 footnote1
     "Based on the above output, we could see that there's a fraction of 10% countries of the world that still have a very low literacy rate of less than 50%"
-	; 
+    ; 
 footnote2
     "Meanwhile, 86.6% of countries have the literacy rate of above 50%"
-	;
+    ;
 
 footnote3
     "Only 3.35% of countries reaching the complete Literacy rate of 100%"
-	;
+    ;
 
 * 
 
@@ -141,25 +148,24 @@ net_migration so that the means computed do not include any possible illegal
 values. 
 ;
 
-
-
 proc means
-    min q1 median q3 max
-    data= COTW_analytic_file
+        min q1 median q3 max
+        data= COTW_analytic_file
     ;
-    var Literacy
+    var 
+        Literacy
     ;
 run;
 
 proc freq
-    data=COTW_analytic_file;
-    table Literacy;
+         data=COTW_analytic_file
+    ;
+    table
+         Literacy;
     format
-    Literacy Literacy_bin.;
+         Literacy Literacy_bin.
+    ;
 run;
 title;
 footnote;
 
- 
- 
-*******************************************************************************; 
