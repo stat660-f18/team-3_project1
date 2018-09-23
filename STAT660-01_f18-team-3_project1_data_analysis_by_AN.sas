@@ -103,10 +103,13 @@ illegal values.
 ; 
 
 proc corr 
-        data = COTW_analytic_file PEARSON SPEARMAN
+        data = COTW_analytic_file 
+        PEARSON 
+        SPEARMAN
     ; 
     var 
-        net_migration GDP 
+        net_migration 
+        GDP 
     ; 
 run;
 title;
@@ -161,7 +164,8 @@ proc freq
          data=COTW_analytic_file
     ;
     table
-         Literacy;
+         Literacy
+    ;
     format
          Literacy Literacy_bin.
     ;
