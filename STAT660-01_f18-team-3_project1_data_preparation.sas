@@ -52,7 +52,7 @@ proc format;
          0   <- 1.01 ="Q3 Net Migration"
          1.01<- high ="Q4 Net Migration"
     ;
-	value Literacy_bin
+    value Literacy_bin
         1-<50 = "Under 50% Literacy"
         50-99.9 = "Over 50% Literacy"
         100 = "100% Literacy"
@@ -106,11 +106,13 @@ run;
 *******************************************************************************;
 
 proc sort
-    nodupkey
-    data=cotw_raw
-    out=_null_
+        nodupkey
+        data=cotw_raw
+        out=_null_
     ;
-    by Country;
+    by 
+        Country
+    ;
 run;
 
 *******************************************************************************;
@@ -150,14 +152,28 @@ results to a temporary dataset, and use PROC SORT to extract and sort just the
 means the temporary dataset, which will be used as part of data analysis by MP.;
 *******************************************************************************;
 
-proc means mean noprint data=COTW_analytic_file ;
-    class Country;
-    var net_migration;
-    output out=COTW_analytic_file_temp;
+proc means 
+        mean 
+        noprint 
+        data=COTW_analytic_file 
+    ;
+    class 
+        Country
+    ;
+    var 
+        net_migration
+    ;
+    output 
+        out=COTW_analytic_file_temp_mp
+    ;
 run;
 
-proc sort data=COTW_analytic_file_temp (where=(_STAT_="MEAN"));
-    by descending net_migration;
+proc sort 
+        data=COTW_analytic_file_temp_mp (where=(_STAT_="MEAN"))
+    ;
+    by 
+        descending net_migration
+    ;
 run;
 
 *******************************************************************************;
@@ -166,12 +182,26 @@ Use PROC MEANS to compute the mean of GDP for Country, and output the
 results to a temporary dataset, and use PROC SORT to extract and sort just the 
 means the temporary dataset, which will be used as part of data analysis by AN.;
 *******************************************************************************;
-proc means mean noprint data=COTW_analytic_file; 
-    class Country; 
-    var GDP; 
-    output out=COTW_analytic_file_temp; 
+proc means 
+        mean 
+        noprint 
+        data=COTW_analytic_file 
+    ;
+    class 
+        Country
+    ; 
+    var 
+        GDP
+    ; 
+    output 
+        out=COTW_analytic_file_temp
+    ; 
 run; 
 
-proc sort data=COTW_analytic_file_temp (where=(_STAT_="MEAN")); 
-    by descending GDP; 
+proc sort 
+        data=COTW_analytic_file_temp (where=(_STAT_="MEAN"))
+    ; 
+    by 
+        descending GDP
+    ; 
 run; 
