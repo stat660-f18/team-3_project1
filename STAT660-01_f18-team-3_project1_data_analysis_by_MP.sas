@@ -63,7 +63,7 @@ illegal values.
   
 proc print 
         noobs
-        data=COTW_analytic_file_temp (obs=20) 
+        data=COTW_analytic_file_temp_mp (obs=20) 
     ;
     id 
         Country
