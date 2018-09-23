@@ -104,7 +104,8 @@ illegal values.
 
 proc corr 
         data = COTW_analytic_file 
-        PEARSON SPEARMAN
+        PEARSON 
+        SPEARMAN
     ; 
     var 
         net_migration 
