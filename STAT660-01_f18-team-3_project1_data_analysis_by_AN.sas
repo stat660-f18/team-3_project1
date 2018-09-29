@@ -24,9 +24,6 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 
 
  
- 
- 
-*******************************************************************************; 
 title1 
     "Research Question: What are the top 20 countries with the highest values of GDP"? 
     ; 
@@ -42,8 +39,7 @@ footnote1
 footnote2
     "These top 10 highest-GDP countries have the minimum GDP value of 30000(USD)per capita."
     ;
-* 
- 
+*  
 Methodology: Use PROC PRINT to print just the first twenty observations from 
 the temporary dataset created in the corresponding data-prep file
  
@@ -53,11 +49,7 @@ like filtering for percentages between 0 and 1.
  
 Possible Follow-up Steps: More carefully clean the values of the variable GDP 
 so that the means computed do not include any possible illegal values. 
- 
-; 
-
-
- 
+;  
 proc print 
         noobs
         data=COTW_analytic_file_temp(obs=20) 
@@ -74,7 +66,6 @@ footnote;
 
 
 
-*******************************************************************************; 
 title1 
     "Research Question: Is there a correlation between GDP and net_migration?"
     ; 
@@ -86,9 +77,7 @@ title2
 footnote1
     "Pearson Chi-Sq Test shows p-value <0.001 therefore we could accept Ho and can safely conclude that there is a significant correlation between GDP and net migration."
     ;
-
 * 
-
 Methodology: Use PROC CORR can to compute Pearson product-moment correlation  
 coefficient between net_migration and GDP, as well as Spearman's rank-order 
 correlation, a nonparametric measures of association. PROC CORR also computes 
@@ -99,9 +88,7 @@ Limitations: Data dictionary is limited. Missing values for some countries.
 Possible Follow-up Steps: More carefully clean the values of the variable 
 net_migration so that the means computed do not include any possible 
 illegal values. 
- 
 ; 
-
 proc corr 
         data = COTW_analytic_file 
         PEARSON 
@@ -117,8 +104,6 @@ footnote;
 
 
 
-*******************************************************************************; 
-
 title1 
     "Research Question: What's the percentage of the countries with literacy rate of 50% or less ? What's the percentage of the countries with complete literacy(100%) ? "
     ; 
@@ -130,6 +115,7 @@ title2
 footnote1
     "Based on the above output, we could see that there's a fraction of 10% countries of the world that still have a very low literacy rate of less than 50%"
     ; 
+    
 footnote2
     "Meanwhile, 86.6% of countries have the literacy rate of above 50%"
     ;
@@ -137,9 +123,7 @@ footnote2
 footnote3
     "Only 3.35% of countries reaching the complete Literacy rate of 100%"
     ;
-
 * 
-
 Methodology: Use proc means to study the five-number summary of each variable,
 create formats to bin values of Literacy based upon their 
 spread, and use proc freq to cross-tabulate bins.
@@ -150,7 +134,6 @@ Possible Follow-up Steps: More carefully clean the values of the variable
 net_migration so that the means computed do not include any possible illegal 
 values. 
 ;
-
 proc means
         min q1 median q3 max
         data= COTW_analytic_file
