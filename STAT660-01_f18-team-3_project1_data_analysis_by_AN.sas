@@ -25,7 +25,7 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 
  
 title1 
-    "Research Question: What are the top 20 countries with the highest values of GDP"? 
+    "Research Question: What are the top 20 countries with the highest values of GDP ?" 
     ; 
 
 title2 
